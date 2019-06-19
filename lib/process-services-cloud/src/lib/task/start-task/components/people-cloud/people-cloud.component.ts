@@ -95,9 +95,6 @@ export class PeopleCloudComponent implements OnInit, OnChanges {
     @ViewChild('userInput')
     private userInput: ElementRef<HTMLInputElement>;
 
-    @ViewChild('singleSelectionInput')
-    private singleSelectionInput: ElementRef<HTMLInputElement>;
-
     private _searchUsers: IdentityUserModel[] = [];
     private selectedUsersSubject: BehaviorSubject<IdentityUserModel[]>;
     private searchUsersSubject: BehaviorSubject<IdentityUserModel[]>;
@@ -142,12 +139,6 @@ export class PeopleCloudComponent implements OnInit, OnChanges {
         } else {
             this.enableSearch();
         }
-
-        setTimeout( () => {
-            if (!!this.singleSelectionInput) {
-                this.singleSelectionInput.nativeElement.click();
-            }
-        });
     }
 
     initSubjects() {

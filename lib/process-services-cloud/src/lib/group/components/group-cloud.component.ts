@@ -90,9 +90,6 @@ export class GroupCloudComponent implements OnInit, OnChanges {
     @ViewChild('groupInput')
     private groupInput: ElementRef<HTMLInputElement>;
 
-    @ViewChild('singleSelectionGroupInput')
-    private singleSelectionGroupInput: ElementRef<HTMLInputElement>;
-
     private selectedGroups: GroupModel[] = [];
 
     private searchGroups: GroupModel[] = [];
@@ -140,12 +137,6 @@ export class GroupCloudComponent implements OnInit, OnChanges {
         } else {
             this.enableSearch();
         }
-
-        setTimeout( () => {
-            if (!!this.singleSelectionGroupInput) {
-                this.singleSelectionGroupInput.nativeElement.click();
-            }
-        });
     }
 
     private isAppNameChanged(change) {
@@ -226,6 +217,8 @@ export class GroupCloudComponent implements OnInit, OnChanges {
             this.preSelectGroups.forEach((group: GroupModel) => {
                 this.selectedGroups.push(group);
             });
+            let groups = this.removeDuplicatedGroups(this.selectedGroups);
+            this.selectedGroups = [...groups];
             this.selectedGroupsSubject.next(this.selectedGroups);
         } else {
             this.searchGroupsControl.setValue(this.preSelectGroups[0]);
@@ -278,6 +271,13 @@ export class GroupCloudComponent implements OnInit, OnChanges {
 
     getDisplayName(group: GroupModel): string {
         return group ? group.name : '';
+    }
+
+    private removeDuplicatedGroups(groups: GroupModel[]): GroupModel[] {
+        return groups.filter((group, index, self) =>
+                    index === self.findIndex((auxGroup) => {
+                        return group.id === auxGroup.id
+                    }));
     }
 
     private hasPreSelectGroups(): boolean {
