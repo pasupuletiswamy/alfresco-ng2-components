@@ -95,6 +95,9 @@ export class PeopleCloudComponent implements OnInit, OnChanges {
     @ViewChild('userInput')
     private userInput: ElementRef<HTMLInputElement>;
 
+    @ViewChild('singleSelectionInput')
+    private singleSelectionInput: ElementRef<HTMLInputElement>;
+
     private _searchUsers: IdentityUserModel[] = [];
     private selectedUsersSubject: BehaviorSubject<IdentityUserModel[]>;
     private searchUsersSubject: BehaviorSubject<IdentityUserModel[]>;
@@ -139,6 +142,12 @@ export class PeopleCloudComponent implements OnInit, OnChanges {
         } else {
             this.enableSearch();
         }
+
+        setTimeout( () => {
+            if (!!this.singleSelectionInput) {
+                this.singleSelectionInput.nativeElement.click();
+            }
+        });
     }
 
     initSubjects() {
@@ -193,7 +202,9 @@ export class PeopleCloudComponent implements OnInit, OnChanges {
 
     private removeDuplicatedUsers(users: IdentityUserModel[]): IdentityUserModel[] {
         return users.filter((user, index, self) =>
-                    index === self.findIndex((auxUser) => user.id === auxUser.id));
+                    index === self.findIndex((auxUser) => {
+                        return user.id === auxUser.id && user.username === auxUser.username;
+                    }));
     }
 
     async filterPreselectUsers() {
@@ -328,16 +339,12 @@ export class PeopleCloudComponent implements OnInit, OnChanges {
         } else {
             this.loadMultiplePreselectUsers();
         }
-        if (this.userInput) {
-            this.userInput.nativeElement.click();
-        }
     }
 
     async loadNoValidationPreselectUsers() {
         let users: IdentityUserModel[];
 
         users = this.removeDuplicatedUsers(this.preSelectUsers);
-
         this.preSelectUsers = [...users];
 
         if (this.isMultipleMode()) {
