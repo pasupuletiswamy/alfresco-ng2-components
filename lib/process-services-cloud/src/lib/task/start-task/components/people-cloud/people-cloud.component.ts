@@ -343,7 +343,7 @@ export class PeopleCloudComponent implements OnInit, OnChanges {
         } else {
             setTimeout(() => {
                 this.searchUserCtrl.setValue(this.preSelectUsers[0]);
-            },0);
+            }, 0);
         }
     }
 
