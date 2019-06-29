@@ -147,7 +147,6 @@ describe('Start Task Form', () => {
             startTask.checkFormDefinitionIsDisplayed('StandAloneForm');
         });
 
-
     });
 
     describe('Start a process with a start event form', () => {
